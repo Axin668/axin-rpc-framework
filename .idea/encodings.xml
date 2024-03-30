@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/axin-client/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/axin-client/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/axin-server/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/axin-server/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/hello-service-api/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/hello-service-api/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/rpc-framework-common/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/rpc-framework-common/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/rpc-framework-core/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/rpc-framework-core/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/rpc-framework-simple/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/rpc-framework-simple/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
+  </component>
+</project>
