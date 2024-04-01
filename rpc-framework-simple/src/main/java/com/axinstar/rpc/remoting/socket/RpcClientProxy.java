@@ -1,4 +1,4 @@
-package com.axinstar.rpc;
+package com.axinstar.rpc.remoting.socket;
 
 import com.axinstar.rpc.dto.RpcRequest;
 import org.slf4j.Logger;
