@@ -1,9 +1,10 @@
-package com.axinstar.rpc.remoting.socket;
+package com.axinstar.rpc.transport.socket;
 
 import com.axinstar.rpc.dto.RpcRequest;
 import com.axinstar.rpc.dto.RpcResponse;
+import com.axinstar.rpc.registry.DefaultServiceRegistry;
 import com.axinstar.rpc.registry.ServiceRegistry;
-import com.axinstar.rpc.remoting.RpcRequestHandler;
+import com.axinstar.rpc.transport.RpcRequestHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,17 +13,19 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class RpcRequestHandlerRunnable implements Runnable {
+public class SocketRpcRequestHandlerRunnable implements Runnable {
 
-    private static final Logger logger = LoggerFactory.getLogger(RpcRequestHandlerRunnable.class);
+    private static final Logger logger = LoggerFactory.getLogger(SocketRpcRequestHandlerRunnable.class);
     private Socket socket;
-    private RpcRequestHandler rpcRequestHandler;
-    private ServiceRegistry serviceRegistry;
+    private static RpcRequestHandler rpcRequestHandler;
+    private static ServiceRegistry serviceRegistry;
+    static {
+        rpcRequestHandler = new RpcRequestHandler();
+        serviceRegistry = new DefaultServiceRegistry();
+    }
 
-    public RpcRequestHandlerRunnable(Socket socket, RpcRequestHandler rpcRequestHandler, com.axinstar.rpc.registry.ServiceRegistry serviceRegistry) {
+    public SocketRpcRequestHandlerRunnable(Socket socket) {
         this.socket = socket;
-        this.rpcRequestHandler = rpcRequestHandler;
-        this.serviceRegistry = serviceRegistry;
     }
 
     @Override

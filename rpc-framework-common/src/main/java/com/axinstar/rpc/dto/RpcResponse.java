@@ -1,7 +1,7 @@
 package com.axinstar.rpc.dto;
 
 import com.axinstar.rpc.enumeration.RpcResponseCode;
-import lombok.Data;
+import lombok.*;
 
 import java.io.Serializable;
 
@@ -9,7 +9,12 @@ import java.io.Serializable;
  * @author axin
  * @since 2024/03/30
  */
-@Data
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class RpcResponse<T> implements Serializable {
 
     private static final long serialVersionUID = 715745410605631233L;

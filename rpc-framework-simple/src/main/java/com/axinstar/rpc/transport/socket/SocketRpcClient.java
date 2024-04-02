@@ -1,10 +1,12 @@
-package com.axinstar.rpc.remoting.socket;
+package com.axinstar.rpc.transport.socket;
 
 import com.axinstar.rpc.dto.RpcRequest;
 import com.axinstar.rpc.dto.RpcResponse;
 import com.axinstar.rpc.enumeration.RpcErrorMessageEnum;
 import com.axinstar.rpc.enumeration.RpcResponseCode;
 import com.axinstar.rpc.exception.RpcException;
+import com.axinstar.rpc.transport.RpcClient;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,10 +15,14 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class RpcClient {
-    private static final Logger logger = LoggerFactory.getLogger(RpcClient.class);
+@AllArgsConstructor
+public class SocketRpcClient implements RpcClient {
+    private static final Logger logger = LoggerFactory.getLogger(SocketRpcClient.class);
+    private String host;
+    private int port;
 
-    public Object sendRpcRequest(RpcRequest rpcRequest, String host, int port) {
+    @Override
+    public Object sendRpcRequest(RpcRequest rpcRequest) {
         try (Socket socket = new Socket(host, port)) {
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
             objectOutputStream.writeObject(rpcRequest);
