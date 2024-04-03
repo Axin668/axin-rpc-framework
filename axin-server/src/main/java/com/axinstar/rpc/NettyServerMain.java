@@ -1,7 +1,7 @@
 package com.axinstar.rpc;
 
 import com.axinstar.rpc.registry.DefaultServiceRegistry;
-import com.axinstar.rpc.transport.netty.NettyRpcServer;
+import com.axinstar.rpc.transport.netty.server.NettyRpcServer;
 
 /**
  * @author axin

@@ -1,5 +1,11 @@
 package com.axinstar.rpc.serialize;
 
+/**
+ * 序列化接口, 所有序列化类都要实现这个接口
+ *
+ * @author axin
+ * @since 2024/04/02
+ */
 public interface Serializer {
 
     /**
@@ -14,7 +20,7 @@ public interface Serializer {
      * 反序列化
      *
      * @param bytes 序列化后的字节数组
-     * @param clazz 类对象
+     * @param clazz 目标类对象
      * @param <T>
      * @return 反序列化的对象
      */

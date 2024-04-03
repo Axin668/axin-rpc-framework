@@ -1,10 +1,11 @@
-package com.axinstar.rpc.transport.netty;
+package com.axinstar.rpc.transport.netty.server;
 
 import com.axinstar.rpc.dto.RpcRequest;
 import com.axinstar.rpc.dto.RpcResponse;
 import com.axinstar.rpc.registry.DefaultServiceRegistry;
 import com.axinstar.rpc.registry.ServiceRegistry;
 import com.axinstar.rpc.transport.RpcRequestHandler;
+import com.axinstar.rpc.transport.netty.codec.NettyKryoDecoder;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
@@ -14,6 +15,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * 自定义服务端的 ChannelHandler 来处理客户端发过来的数据
+ *
  * @author axin
  * @since 2024/04/02
  */

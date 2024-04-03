@@ -1,8 +1,10 @@
-package com.axinstar.rpc.transport.netty;
+package com.axinstar.rpc.transport.netty.server;
 
 import com.axinstar.rpc.dto.RpcRequest;
 import com.axinstar.rpc.dto.RpcResponse;
 import com.axinstar.rpc.serialize.kryo.KryoSerializer;
+import com.axinstar.rpc.transport.netty.codec.NettyKryoDecoder;
+import com.axinstar.rpc.transport.netty.codec.NettyKryoEncoder;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -19,7 +21,7 @@ import org.slf4j.LoggerFactory;
  */
 public class NettyRpcServer {
 
-    private static final Logger logger = LoggerFactory.getLogger(NettyRpcClient.class);
+    private static final Logger logger = LoggerFactory.getLogger(NettyRpcServer.class);
     private final int port;
     private KryoSerializer kryoSerializer;
 

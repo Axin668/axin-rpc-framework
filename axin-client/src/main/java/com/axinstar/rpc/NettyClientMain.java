@@ -1,7 +1,7 @@
 package com.axinstar.rpc;
 
 import com.axinstar.rpc.transport.RpcClientProxy;
-import com.axinstar.rpc.transport.netty.NettyRpcClient;
+import com.axinstar.rpc.transport.netty.client.NettyRpcClient;
 
 /**
  * @author axin

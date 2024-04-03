@@ -14,6 +14,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
 /**
+ * Kryo序列化类, Kryo序列化效率很高, 但是只兼容 Java 语言
+ *
  * @author axin
  * @since 2024/04/01
  */
@@ -25,7 +27,7 @@ public class KryoSerializer implements Serializer {
      * 由于 Kryo 不是线程安全的。每个线程都应该有自己的 Kryo，Input 和 Output 实例。
      * 所以，使用 ThreadLocal 存放 Kryo 对象
      */
-    private static final ThreadLocal<Kryo> kryoThreadLocal = ThreadLocal.withInitial(() -> {
+    private final ThreadLocal<Kryo> kryoThreadLocal = ThreadLocal.withInitial(() -> {
         Kryo kryo = new Kryo();
         kryo.register(RpcRequest.class);
         kryo.register(RpcResponse.class);
