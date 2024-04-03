@@ -19,6 +19,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * 客户端. 发送消息到服务端, 并接受服务端返回的方法执行结果
+ *
  * @author axin
  * @since 2024/04/02
  */
