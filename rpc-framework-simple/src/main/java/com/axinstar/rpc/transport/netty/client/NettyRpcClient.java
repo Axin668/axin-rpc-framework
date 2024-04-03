@@ -6,6 +6,7 @@ import com.axinstar.rpc.serialize.kryo.KryoSerializer;
 import com.axinstar.rpc.transport.RpcClient;
 import com.axinstar.rpc.transport.netty.codec.NettyKryoDecoder;
 import com.axinstar.rpc.transport.netty.codec.NettyKryoEncoder;
+import com.axinstar.rpc.utils.checker.RpcMessageChecker;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -78,8 +79,10 @@ public class NettyRpcClient implements RpcClient {
                     }
                 });
                 futureChannel.closeFuture().sync();
-                AttributeKey<RpcResponse> key = AttributeKey.valueOf("rpcResponse");
+                AttributeKey<RpcResponse> key = AttributeKey.valueOf("rpcResponse" + rpcRequest.getRequestId());
                 RpcResponse rpcResponse = futureChannel.attr(key).get();
+                // 校验 RpcResponse 和 RpcRequest
+                RpcMessageChecker.check(rpcResponse, rpcRequest);
                 return rpcResponse.getData();
             }
         } catch (InterruptedException e) {
