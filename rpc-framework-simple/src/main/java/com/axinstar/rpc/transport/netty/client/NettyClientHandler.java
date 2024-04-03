@@ -50,7 +50,7 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter {
      */
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        logger.error("client catch exception:", cause);
+        logger.error("client catch com.axinstar.rpc.exception:", cause);
         cause.printStackTrace();
         ctx.close();
     }

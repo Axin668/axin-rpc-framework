@@ -40,7 +40,7 @@ public class SocketRpcRequestHandlerRunnable implements Runnable {
             objectOutputStream.writeObject(RpcResponse.success(result, rpcRequest.getRequestId()));
             objectOutputStream.flush();
         } catch (IOException | ClassNotFoundException e) {
-            logger.error("occur exception:", e);
+            logger.error("occur com.axinstar.rpc.exception:", e);
         }
     }
 }

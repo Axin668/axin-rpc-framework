@@ -56,7 +56,7 @@ public class NettyRpcServer {
             // 等待服务端监听端口关闭
             f.channel().closeFuture().sync();
         } catch (InterruptedException e) {
-            logger.error("occur exception when start server:", e);
+            logger.error("occur com.axinstar.rpc.exception when start server:", e);
         } finally {
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();

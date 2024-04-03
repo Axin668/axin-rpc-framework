@@ -23,7 +23,7 @@ public class RpcRequestHandler {
             result = invokeTargetMethod(rpcRequest, service);
             logger.info("service:{} successful invoke method:{}", rpcRequest.getInterfaceName(), rpcRequest.getMethodName());
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            logger.error("occur exception", e);
+            logger.error("occur com.axinstar.rpc.exception", e);
         }
         return result;
     }

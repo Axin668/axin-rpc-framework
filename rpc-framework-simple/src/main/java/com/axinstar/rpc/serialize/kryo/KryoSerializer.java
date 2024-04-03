@@ -46,7 +46,7 @@ public class KryoSerializer implements Serializer {
             kryoThreadLocal.remove();
             return output.toBytes();
         } catch (Exception e) {
-            logger.error("occur exception when serialize:", e);
+            logger.error("occur com.axinstar.rpc.exception when serialize:", e);
             throw new SerializeException("序列化失败");
         }
     }
@@ -61,7 +61,7 @@ public class KryoSerializer implements Serializer {
             kryoThreadLocal.remove();
             return clazz.cast(o);
         } catch (Exception e) {
-            logger.error("occur exception when deserialize:", e);
+            logger.error("occur com.axinstar.rpc.exception when deserialize:", e);
             throw new SerializeException("反序列化失败");
         }
     }
