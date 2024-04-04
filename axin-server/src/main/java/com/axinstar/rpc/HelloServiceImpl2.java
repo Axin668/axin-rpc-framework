@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 
 public class HelloServiceImpl2 {
 
-    private static final Logger logger = LoggerFactory.getLogger(HelloService.class);
+    private static final Logger logger = LoggerFactory.getLogger(HelloServiceImpl2.class);
 
     public String hello(Hello hello) {
         logger.info("HelloServiceImpl收到: {}.", hello.getMessage());

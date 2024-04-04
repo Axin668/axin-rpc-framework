@@ -2,8 +2,6 @@ package com.axinstar.rpc.transport.socket;
 
 import com.axinstar.rpc.dto.RpcRequest;
 import com.axinstar.rpc.dto.RpcResponse;
-import com.axinstar.rpc.registry.DefaultServiceRegistry;
-import com.axinstar.rpc.registry.ServiceRegistry;
 import com.axinstar.rpc.transport.RpcRequestHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,11 +15,9 @@ public class SocketRpcRequestHandlerRunnable implements Runnable {
 
     private static final Logger logger = LoggerFactory.getLogger(SocketRpcRequestHandlerRunnable.class);
     private Socket socket;
-    private static RpcRequestHandler rpcRequestHandler;
-    private static ServiceRegistry serviceRegistry;
+    private static final RpcRequestHandler rpcRequestHandler;
     static {
         rpcRequestHandler = new RpcRequestHandler();
-        serviceRegistry = new DefaultServiceRegistry();
     }
 
     public SocketRpcRequestHandlerRunnable(Socket socket) {
@@ -34,13 +30,11 @@ public class SocketRpcRequestHandlerRunnable implements Runnable {
         try (ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
              ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream())) {
             RpcRequest rpcRequest = (RpcRequest) objectInputStream.readObject();
-            String interfaceName = rpcRequest.getInterfaceName();
-            Object service = serviceRegistry.getService(interfaceName);
-            Object result = rpcRequestHandler.handle(rpcRequest, service);
+            Object result = rpcRequestHandler.handle(rpcRequest);
             objectOutputStream.writeObject(RpcResponse.success(result, rpcRequest.getRequestId()));
             objectOutputStream.flush();
         } catch (IOException | ClassNotFoundException e) {
-            logger.error("occur com.axinstar.rpc.exception:", e);
+            logger.error("occur exception:", e);
         }
     }
 }
