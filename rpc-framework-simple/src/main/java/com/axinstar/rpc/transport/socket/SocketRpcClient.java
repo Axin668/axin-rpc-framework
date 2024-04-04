@@ -2,10 +2,8 @@ package com.axinstar.rpc.transport.socket;
 
 import com.axinstar.rpc.dto.RpcRequest;
 import com.axinstar.rpc.dto.RpcResponse;
-import com.axinstar.rpc.enumeration.RpcErrorMessageEnum;
-import com.axinstar.rpc.enumeration.RpcResponseCode;
 import com.axinstar.rpc.exception.RpcException;
-import com.axinstar.rpc.transport.RpcClient;
+import com.axinstar.rpc.transport.ClientTransport;
 import com.axinstar.rpc.utils.checker.RpcMessageChecker;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -17,7 +15,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 @AllArgsConstructor
-public class SocketRpcClient implements RpcClient {
+public class SocketRpcClient implements ClientTransport {
     private static final Logger logger = LoggerFactory.getLogger(SocketRpcClient.class);
     private String host;
     private int port;
@@ -35,6 +33,7 @@ public class SocketRpcClient implements RpcClient {
             RpcMessageChecker.check(rpcResponse, rpcRequest);
             return rpcResponse.getData();
         } catch (IOException | ClassNotFoundException e) {
+            logger.error("occur exception when send sendRpcRequest");
             throw new RpcException("调用服务失败:", e);
         }
     }
