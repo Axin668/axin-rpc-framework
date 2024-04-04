@@ -3,6 +3,8 @@ package com.axinstar.rpc.transport.socket;
 import com.axinstar.rpc.dto.RpcRequest;
 import com.axinstar.rpc.dto.RpcResponse;
 import com.axinstar.rpc.exception.RpcException;
+import com.axinstar.rpc.registry.ServiceRegistry;
+import com.axinstar.rpc.registry.ZkServiceRegistry;
 import com.axinstar.rpc.transport.ClientTransport;
 import com.axinstar.rpc.utils.checker.RpcMessageChecker;
 import lombok.AllArgsConstructor;
@@ -12,17 +14,29 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 
+/**
+ * 基于 Socket 传输 RpcRequest
+ *
+ * @author axin
+ * @since 2024/04/05
+ */
 @AllArgsConstructor
 public class SocketRpcClient implements ClientTransport {
     private static final Logger logger = LoggerFactory.getLogger(SocketRpcClient.class);
-    private String host;
-    private int port;
+    private final ServiceRegistry serviceRegistry;
+
+    public SocketRpcClient() {
+        serviceRegistry = new ZkServiceRegistry();
+    }
 
     @Override
     public Object sendRpcRequest(RpcRequest rpcRequest) {
-        try (Socket socket = new Socket(host, port)) {
+        InetSocketAddress inetSocketAddress = serviceRegistry.lookupService(rpcRequest.getInterfaceName());
+        try (Socket socket = new Socket()) {
+            socket.connect(inetSocketAddress);
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
             // 通过输出流发送数据到服务端
             objectOutputStream.writeObject(rpcRequest);

@@ -2,7 +2,7 @@ package com.axinstar.rpc.transport.socket;
 
 import com.axinstar.rpc.dto.RpcRequest;
 import com.axinstar.rpc.dto.RpcResponse;
-import com.axinstar.rpc.transport.RpcRequestHandler;
+import com.axinstar.rpc.handler.RpcRequestHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

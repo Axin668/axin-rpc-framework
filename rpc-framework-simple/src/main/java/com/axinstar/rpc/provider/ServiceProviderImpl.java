@@ -1,4 +1,4 @@
-package com.axinstar.rpc.registry;
+package com.axinstar.rpc.provider;
 
 import com.axinstar.rpc.enumeration.RpcErrorMessageEnum;
 import com.axinstar.rpc.exception.RpcException;
@@ -10,46 +10,42 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 默认的服务注册中心实现, 通过 Map 保存服务信息, 后续可以通过 zookeeper 改进
- *
  * @author axin
- * @since 2024/04/01
+ * @since 2024/04/05
  */
-public class DefaultServiceRegistry implements ServiceRegistry {
+public class ServiceProviderImpl implements ServiceProvider{
 
-    private static final Logger logger = LoggerFactory.getLogger(DefaultServiceRegistry.class);
+    private static final Logger logger = LoggerFactory.getLogger(ServiceProviderImpl.class);
 
     /**
-     *  接口名和服务的对应关系, TODO 处理一个接口被两个实现类实现的情况
-     *  key: service/interface name
-     *  value: service
+     * 接口名和服务的对应关系
+     * note: 处理一个接口被两个实现类实现的情况如何处理?
      */
     private static final Map<String, Object> serviceMap = new ConcurrentHashMap<>();
     private static final Set<String> registeredService = ConcurrentHashMap.newKeySet();
 
     /**
-     * TODO 修改为扫描注解注册
-     * 将这个对象所有实现的接口都注册进去
+     * note: 可以修改为扫描注解注册
      */
     @Override
-    public synchronized <T> void register(T service) {
+    public <T> void addServiceProvider(T service) {
         String serviceName = service.getClass().getCanonicalName();
         if (registeredService.contains(serviceName)) {
             return;
         }
         registeredService.add(serviceName);
-        Class<?>[] interfaces = service.getClass().getInterfaces();
+        Class[] interfaces = service.getClass().getInterfaces();
         if (interfaces.length == 0) {
             throw new RpcException(RpcErrorMessageEnum.SERVICE_NOT_IMPLEMENT_ANY_INTERFACE);
         }
         for (Class i : interfaces) {
             serviceMap.put(i.getCanonicalName(), service);
         }
-        logger.info("Add service: {} and interface:{}", serviceName, service.getClass().getInterfaces());
+        logger.info("Add service: {} and interfaces:{}", serviceName, service.getClass().getInterfaces());
     }
 
     @Override
-    public synchronized Object getService(String serviceName) {
+    public Object getServiceProvider(String serviceName) {
         Object service = serviceMap.get(serviceName);
         if (service == null) {
             throw new RpcException(RpcErrorMessageEnum.SERVICE_CAN_NOT_BE_FOUND);

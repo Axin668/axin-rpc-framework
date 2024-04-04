@@ -2,6 +2,10 @@ package com.axinstar.rpc.transport.netty.server;
 
 import com.axinstar.rpc.dto.RpcRequest;
 import com.axinstar.rpc.dto.RpcResponse;
+import com.axinstar.rpc.provider.ServiceProvider;
+import com.axinstar.rpc.provider.ServiceProviderImpl;
+import com.axinstar.rpc.registry.ServiceRegistry;
+import com.axinstar.rpc.registry.ZkServiceRegistry;
 import com.axinstar.rpc.serialize.kryo.KryoSerializer;
 import com.axinstar.rpc.transport.netty.codec.NettyKryoDecoder;
 import com.axinstar.rpc.transport.netty.codec.NettyKryoEncoder;
@@ -15,6 +19,8 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.InetSocketAddress;
+
 /**
  * 服务端. 接收客户端消息, 并且根据客户端的消息调用相应的方法, 然后返回结果给客户端
  *
@@ -24,15 +30,27 @@ import org.slf4j.LoggerFactory;
 public class NettyServer {
 
     private static final Logger logger = LoggerFactory.getLogger(NettyServer.class);
+    private final String host;
     private final int port;
     private final KryoSerializer kryoSerializer;
+    private final ServiceRegistry serviceRegistry;
+    private final ServiceProvider serviceProvider;
 
-    public NettyServer(int port) {
+    public NettyServer(String host, int port) {
+        this.host = host;
         this.port = port;
         kryoSerializer = new KryoSerializer();
+        serviceRegistry = new ZkServiceRegistry();
+        serviceProvider = new ServiceProviderImpl();
     }
 
-    public void run() {
+    public <T> void publishService(Object service, Class<T> serviceClass) {
+        serviceProvider.addServiceProvider(service);
+        serviceRegistry.registerService(serviceClass.getCanonicalName(), new InetSocketAddress(host, port));
+        start();
+    }
+
+    private void start() {
         NioEventLoopGroup bossGroup = new NioEventLoopGroup();
         NioEventLoopGroup workerGroup = new NioEventLoopGroup();
         try {
@@ -54,7 +72,7 @@ public class NettyServer {
                     // 表示系统用于临时存放已完成三次握手的请求的队列的最大长度, 如果连接建立频繁, 服务器创建新连接较慢, 可以适当调大这个参数
                     .option(ChannelOption.SO_BACKLOG, 128);
             // 绑定端口, 同步等待绑定成功
-            ChannelFuture f = b.bind(port).sync();
+            ChannelFuture f = b.bind(host, port).sync();
             // 等待服务端监听端口关闭
             f.channel().closeFuture().sync();
         } catch (InterruptedException e) {

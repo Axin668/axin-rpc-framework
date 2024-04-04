@@ -3,6 +3,8 @@ package com.axinstar.rpc.transport;
 import com.axinstar.rpc.dto.RpcRequest;
 
 /**
+ * 传输 RpcRequest
+ *
  * @author axin
  * @since 2024/04/04
  */

@@ -1,7 +1,7 @@
-package com.axinstar.rpc.transport;
+package com.axinstar.rpc.proxy;
 
 import com.axinstar.rpc.dto.RpcRequest;
-import com.axinstar.rpc.transport.socket.SocketRpcClient;
+import com.axinstar.rpc.transport.ClientTransport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

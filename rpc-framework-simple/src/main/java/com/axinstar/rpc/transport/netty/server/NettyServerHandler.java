@@ -2,9 +2,7 @@ package com.axinstar.rpc.transport.netty.server;
 
 import com.axinstar.rpc.dto.RpcRequest;
 import com.axinstar.rpc.dto.RpcResponse;
-import com.axinstar.rpc.registry.DefaultServiceRegistry;
-import com.axinstar.rpc.registry.ServiceRegistry;
-import com.axinstar.rpc.transport.RpcRequestHandler;
+import com.axinstar.rpc.handler.RpcRequestHandler;
 import com.axinstar.rpc.transport.netty.codec.NettyKryoDecoder;
 import com.axinstar.rpc.utils.concurrent.ThreadPoolFactory;
 import io.netty.channel.ChannelFuture;
