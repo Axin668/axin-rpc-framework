@@ -38,7 +38,7 @@ public class RpcRequestHandler {
      * @param service       提供服务的对象
      * @return              目标方法执行的结果
      */
-    private Object invokeTargetMethod(RpcRequest rpcRequest, Object service){
+    private Object invokeTargetMethod(RpcRequest rpcRequest, Object service) {
         Object result;
         try {
             Method method = service.getClass().getMethod(rpcRequest.getMethodName(), rpcRequest.getParamTypes());

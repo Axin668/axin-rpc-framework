@@ -78,7 +78,7 @@ public final class CuratorUtils {
 
     private static CuratorFramework getZkClient() {
         // 重试策略, 重试5次, 并在两次重试之间等待100毫秒, 以防出现连接问题.
-        RetryPolicy retryPolicy= new ExponentialBackoffRetry(BASE_SLEEP_TIME, MAX_RETRIES);
+        RetryPolicy retryPolicy = new ExponentialBackoffRetry(BASE_SLEEP_TIME, MAX_RETRIES);
         CuratorFramework curatorFramework = CuratorFrameworkFactory.builder()
                 // 要连接的服务器(可以是服务器列表)
                 .connectString(CONNECT_STRING)
