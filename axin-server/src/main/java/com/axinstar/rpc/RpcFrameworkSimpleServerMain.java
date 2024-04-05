@@ -11,6 +11,6 @@ public class RpcFrameworkSimpleServerMain {
     public static void main(String[] args) {
         HelloService helloService = new HelloServiceImpl();
         SocketRpcServer socketRpcServer = new SocketRpcServer("127.0.0.1", 8080);
-        socketRpcServer.pushlishService(helloService, HelloService.class);
+        socketRpcServer.publishService(helloService, HelloService.class);
     }
 }
