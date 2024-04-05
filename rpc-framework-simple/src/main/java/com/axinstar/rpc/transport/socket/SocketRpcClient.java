@@ -3,8 +3,8 @@ package com.axinstar.rpc.transport.socket;
 import com.axinstar.rpc.dto.RpcRequest;
 import com.axinstar.rpc.dto.RpcResponse;
 import com.axinstar.rpc.exception.RpcException;
-import com.axinstar.rpc.registry.ServiceRegistry;
-import com.axinstar.rpc.registry.ZkServiceRegistry;
+import com.axinstar.rpc.registry.ServiceDiscovery;
+import com.axinstar.rpc.registry.ZkServiceDiscovery;
 import com.axinstar.rpc.transport.ClientTransport;
 import com.axinstar.rpc.utils.checker.RpcMessageChecker;
 import lombok.AllArgsConstructor;
@@ -26,15 +26,15 @@ import java.net.Socket;
 @AllArgsConstructor
 public class SocketRpcClient implements ClientTransport {
     private static final Logger logger = LoggerFactory.getLogger(SocketRpcClient.class);
-    private final ServiceRegistry serviceRegistry;
+    private final ServiceDiscovery serviceDiscovery;
 
     public SocketRpcClient() {
-        serviceRegistry = new ZkServiceRegistry();
+        this.serviceDiscovery = new ZkServiceDiscovery();
     }
 
     @Override
     public Object sendRpcRequest(RpcRequest rpcRequest) {
-        InetSocketAddress inetSocketAddress = serviceRegistry.lookupService(rpcRequest.getInterfaceName());
+        InetSocketAddress inetSocketAddress = serviceDiscovery.lookupService(rpcRequest.getInterfaceName());
         try (Socket socket = new Socket()) {
             socket.connect(inetSocketAddress);
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());

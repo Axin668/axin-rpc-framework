@@ -2,8 +2,8 @@ package com.axinstar.rpc.transport.netty.client;
 
 import com.axinstar.rpc.dto.RpcRequest;
 import com.axinstar.rpc.dto.RpcResponse;
-import com.axinstar.rpc.registry.ServiceRegistry;
-import com.axinstar.rpc.registry.ZkServiceRegistry;
+import com.axinstar.rpc.registry.ServiceDiscovery;
+import com.axinstar.rpc.registry.ZkServiceDiscovery;
 import com.axinstar.rpc.transport.ClientTransport;
 import com.axinstar.rpc.utils.checker.RpcMessageChecker;
 import io.netty.channel.Channel;
@@ -24,17 +24,17 @@ import java.util.concurrent.atomic.AtomicReference;
 public class NettyClientTransport implements ClientTransport {
 
     private static final Logger logger = LoggerFactory.getLogger(NettyClientTransport.class);
-    private ServiceRegistry serviceRegistry;
+    private final ServiceDiscovery serviceDiscovery;
 
     public NettyClientTransport() {
-        this.serviceRegistry = new ZkServiceRegistry();
+        this.serviceDiscovery = new ZkServiceDiscovery();
     }
 
     @Override
     public Object sendRpcRequest(RpcRequest rpcRequest) {
         AtomicReference<Object> result = new AtomicReference<>(null);
         try {
-            InetSocketAddress inetSocketAddress = serviceRegistry.lookupService(rpcRequest.getInterfaceName());
+            InetSocketAddress inetSocketAddress = serviceDiscovery.lookupService(rpcRequest.getInterfaceName());
             Channel channel = ChannelProvider.get(inetSocketAddress);
             if (channel.isActive()) {
                 channel.writeAndFlush(rpcRequest).addListener((ChannelFutureListener) future -> {
