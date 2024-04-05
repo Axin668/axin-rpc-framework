@@ -1,4 +1,4 @@
-package com.axinstar.rpc.transport.netty.codec;
+package com.axinstar.rpc.transport.netty.codec.kryo;
 
 import com.axinstar.rpc.serialize.Serializer;
 import io.netty.buffer.ByteBuf;

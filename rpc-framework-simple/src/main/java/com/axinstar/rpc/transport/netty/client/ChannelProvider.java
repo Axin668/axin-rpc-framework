@@ -28,14 +28,10 @@ public class ChannelProvider {
      */
     private static final int MAX_RETRY_COUNT = 5;
 
-    public static Channel get(InetSocketAddress inetSocketAddress) {
+    public static Channel get(InetSocketAddress inetSocketAddress) throws InterruptedException {
         CountDownLatch countDownLatch = new CountDownLatch(1);
-        try {
-            connect(bootstrap, inetSocketAddress, countDownLatch);
-            countDownLatch.await();
-        } catch (InterruptedException e) {
-            log.error("occur exception when get channel:", e);
-        }
+        connect(bootstrap, inetSocketAddress, countDownLatch);
+        countDownLatch.await();
         return channel;
     }
 

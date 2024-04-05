@@ -9,11 +9,13 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * 实现了 ServiceProvider 接口, 可以将其看做是一个保存和提供服务实例对象的示例
+ *
  * @author axin
  * @since 2024/04/05
  */
 @Slf4j
-public class ServiceProviderImpl implements ServiceProvider{
+public class ServiceProviderImpl implements ServiceProvider {
 
     /**
      * 接口名和服务的对应关系
