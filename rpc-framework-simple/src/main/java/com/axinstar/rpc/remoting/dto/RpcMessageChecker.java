@@ -6,6 +6,8 @@ import com.axinstar.rpc.exception.RpcException;
 import lombok.extern.slf4j.Slf4j;
 
 /**
+ * 校验 RpcRequest 和 RpcResponse
+ *
  * @author axin
  * @since 2024/04/03
  */
