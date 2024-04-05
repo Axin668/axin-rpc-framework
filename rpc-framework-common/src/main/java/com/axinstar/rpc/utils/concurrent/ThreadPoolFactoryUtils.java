@@ -1,7 +1,6 @@
 package com.axinstar.rpc.utils.concurrent;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import java.util.concurrent.*;
 
@@ -11,7 +10,7 @@ import java.util.concurrent.*;
  * @author axin
  * @since 2024/04/03
  */
-public final class ThreadPoolFactory {
+public final class ThreadPoolFactoryUtils {
 
     /**
      * 线程池参数
@@ -21,7 +20,7 @@ public final class ThreadPoolFactory {
     private static final int KEEP_ALIVE_TIME = 1;
     private static final int BLOCKING_QUEUE_CAPACITY = 100;
 
-    private ThreadPoolFactory() {
+    private ThreadPoolFactoryUtils() {
 
     }
 

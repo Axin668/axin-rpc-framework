@@ -3,8 +3,8 @@ package com.axinstar.rpc.remoting.transport.netty.server;
 import com.axinstar.rpc.remoting.dto.RpcRequest;
 import com.axinstar.rpc.remoting.dto.RpcResponse;
 import com.axinstar.rpc.handler.RpcRequestHandler;
-import com.axinstar.rpc.utils.concurrent.ThreadPoolFactory;
-import com.axinstar.rpc.utils.factory.SingletonFactory;
+import com.axinstar.rpc.utils.concurrent.ThreadPoolFactoryUtils;
+import com.axinstar.rpc.factory.SingletonFactory;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
@@ -33,7 +33,7 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
 
     public NettyServerHandler() {
         this.rpcRequestHandler = SingletonFactory.getInstance(RpcRequestHandler.class);
-        this.threadPool = ThreadPoolFactory.createDefaultThreadPool(THREAD_NAME_PREFIX);
+        this.threadPool = ThreadPoolFactoryUtils.createDefaultThreadPool(THREAD_NAME_PREFIX);
     }
 
     @Override

@@ -16,6 +16,10 @@
 
 **1.导入项目**
 
+克隆项目到自己的本地：`git clone git@github.com:Axin668/axin-rpc-framework.git`
+
+然后使用 IDEA 打开，等待项目初始化完成。
+
 **2.初始化git hooks**
 
 执行以下命令:
@@ -47,6 +51,8 @@ exit $RESULT
 ```
 
 **3.CheckStyle 插件下载和配置**
+
+TODO
 
 **4.下载运行 ZooKeeper**
 

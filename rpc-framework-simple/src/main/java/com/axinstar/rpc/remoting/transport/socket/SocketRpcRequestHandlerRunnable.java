@@ -3,7 +3,7 @@ package com.axinstar.rpc.remoting.transport.socket;
 import com.axinstar.rpc.remoting.dto.RpcRequest;
 import com.axinstar.rpc.remoting.dto.RpcResponse;
 import com.axinstar.rpc.handler.RpcRequestHandler;
-import com.axinstar.rpc.utils.factory.SingletonFactory;
+import com.axinstar.rpc.factory.SingletonFactory;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
