@@ -1,4 +1,4 @@
-package com.axinstar.rpc.transport.socket;
+package com.axinstar.rpc.remoting.transport.socket;
 
 import com.axinstar.rpc.provider.ServiceProvider;
 import com.axinstar.rpc.provider.ServiceProviderImpl;
@@ -6,8 +6,6 @@ import com.axinstar.rpc.registry.ServiceRegistry;
 import com.axinstar.rpc.registry.ZkServiceRegistry;
 import com.axinstar.rpc.utils.concurrent.ThreadPoolFactory;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;

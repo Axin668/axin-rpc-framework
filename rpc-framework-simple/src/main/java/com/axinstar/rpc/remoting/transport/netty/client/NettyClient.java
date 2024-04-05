@@ -1,10 +1,10 @@
-package com.axinstar.rpc.transport.netty.client;
+package com.axinstar.rpc.remoting.transport.netty.client;
 
-import com.axinstar.rpc.dto.RpcRequest;
-import com.axinstar.rpc.dto.RpcResponse;
+import com.axinstar.rpc.remoting.dto.RpcRequest;
+import com.axinstar.rpc.remoting.dto.RpcResponse;
 import com.axinstar.rpc.serialize.kryo.KryoSerializer;
-import com.axinstar.rpc.transport.netty.codec.kryo.NettyKryoDecoder;
-import com.axinstar.rpc.transport.netty.codec.kryo.NettyKryoEncoder;
+import com.axinstar.rpc.remoting.transport.netty.codec.kryo.NettyKryoDecoder;
+import com.axinstar.rpc.remoting.transport.netty.codec.kryo.NettyKryoEncoder;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;

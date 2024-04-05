@@ -1,7 +1,7 @@
 package com.axinstar.rpc.proxy;
 
-import com.axinstar.rpc.dto.RpcRequest;
-import com.axinstar.rpc.transport.ClientTransport;
+import com.axinstar.rpc.remoting.dto.RpcRequest;
+import com.axinstar.rpc.remoting.transport.ClientTransport;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.InvocationHandler;

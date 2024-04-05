@@ -1,10 +1,8 @@
 package com.axinstar.rpc;
 
-import com.axinstar.rpc.transport.ClientTransport;
+import com.axinstar.rpc.remoting.transport.ClientTransport;
 import com.axinstar.rpc.proxy.RpcClientProxy;
-import com.axinstar.rpc.transport.netty.client.NettyClientTransport;
-
-import java.net.InetSocketAddress;
+import com.axinstar.rpc.remoting.transport.netty.client.NettyClientTransport;
 
 /**
  * @author axin

@@ -1,6 +1,6 @@
-package com.axinstar.rpc.transport.netty.client;
+package com.axinstar.rpc.remoting.transport.netty.client;
 
-import com.axinstar.rpc.dto.RpcResponse;
+import com.axinstar.rpc.remoting.dto.RpcResponse;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.AttributeKey;

@@ -1,6 +1,6 @@
-package com.axinstar.rpc.transport;
+package com.axinstar.rpc.remoting.transport;
 
-import com.axinstar.rpc.dto.RpcRequest;
+import com.axinstar.rpc.remoting.dto.RpcRequest;
 
 /**
  * 传输 RpcRequest

@@ -1,7 +1,7 @@
 package com.axinstar.rpc.handler;
 
-import com.axinstar.rpc.dto.RpcRequest;
-import com.axinstar.rpc.dto.RpcResponse;
+import com.axinstar.rpc.remoting.dto.RpcRequest;
+import com.axinstar.rpc.remoting.dto.RpcResponse;
 import com.axinstar.rpc.enumeration.RpcResponseCode;
 import com.axinstar.rpc.exception.RpcException;
 import com.axinstar.rpc.provider.ServiceProvider;

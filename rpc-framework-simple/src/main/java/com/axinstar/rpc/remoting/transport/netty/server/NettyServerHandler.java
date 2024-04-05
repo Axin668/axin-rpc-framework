@@ -1,7 +1,7 @@
-package com.axinstar.rpc.transport.netty.server;
+package com.axinstar.rpc.remoting.transport.netty.server;
 
-import com.axinstar.rpc.dto.RpcRequest;
-import com.axinstar.rpc.dto.RpcResponse;
+import com.axinstar.rpc.remoting.dto.RpcRequest;
+import com.axinstar.rpc.remoting.dto.RpcResponse;
 import com.axinstar.rpc.handler.RpcRequestHandler;
 import com.axinstar.rpc.utils.concurrent.ThreadPoolFactory;
 import com.axinstar.rpc.utils.factory.SingletonFactory;

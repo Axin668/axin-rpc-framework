@@ -1,8 +1,8 @@
 package com.axinstar.rpc;
 
-import com.axinstar.rpc.transport.ClientTransport;
+import com.axinstar.rpc.remoting.transport.ClientTransport;
 import com.axinstar.rpc.proxy.RpcClientProxy;
-import com.axinstar.rpc.transport.socket.SocketRpcClient;
+import com.axinstar.rpc.remoting.transport.socket.SocketRpcClient;
 
 /**
  * @author axin

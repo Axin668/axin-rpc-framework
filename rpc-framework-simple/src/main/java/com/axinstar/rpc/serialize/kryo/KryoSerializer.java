@@ -1,7 +1,7 @@
 package com.axinstar.rpc.serialize.kryo;
 
-import com.axinstar.rpc.dto.RpcRequest;
-import com.axinstar.rpc.dto.RpcResponse;
+import com.axinstar.rpc.remoting.dto.RpcRequest;
+import com.axinstar.rpc.remoting.dto.RpcResponse;
 import com.axinstar.rpc.exception.SerializeException;
 import com.axinstar.rpc.serialize.Serializer;
 import com.esotericsoftware.kryo.Kryo;

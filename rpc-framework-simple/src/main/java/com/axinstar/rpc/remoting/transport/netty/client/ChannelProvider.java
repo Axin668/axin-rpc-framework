@@ -1,4 +1,4 @@
-package com.axinstar.rpc.transport.netty.client;
+package com.axinstar.rpc.remoting.transport.netty.client;
 
 import com.axinstar.rpc.enumeration.RpcErrorMessageEnum;
 import com.axinstar.rpc.exception.RpcException;

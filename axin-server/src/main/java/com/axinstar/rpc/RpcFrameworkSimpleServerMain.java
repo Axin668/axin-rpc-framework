@@ -1,6 +1,6 @@
 package com.axinstar.rpc;
 
-import com.axinstar.rpc.transport.socket.SocketRpcServer;
+import com.axinstar.rpc.remoting.transport.socket.SocketRpcServer;
 
 /**
  * @author axin

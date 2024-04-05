@@ -1,6 +1,6 @@
 package com.axinstar.rpc;
 
-import com.axinstar.rpc.transport.netty.server.NettyServer;
+import com.axinstar.rpc.remoting.transport.netty.server.NettyServer;
 
 /**
  * @author axin
