@@ -5,6 +5,7 @@ import com.axinstar.rpc.provider.ServiceProviderImpl;
 import com.axinstar.rpc.registry.ServiceRegistry;
 import com.axinstar.rpc.registry.ZkServiceRegistry;
 import com.axinstar.rpc.utils.concurrent.ThreadPoolFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,9 +19,9 @@ import java.util.concurrent.*;
  * @author axin
  * @since 2024/03/30
  */
+@Slf4j
 public class SocketRpcServer {
 
-    private static final Logger logger = LoggerFactory.getLogger(SocketRpcServer.class);
     private final ExecutorService threadPool;
     private final String host;
     private final int port;
@@ -44,15 +45,15 @@ public class SocketRpcServer {
     private void start() {
         try (ServerSocket server = new ServerSocket()) {
             server.bind(new InetSocketAddress(host, port));
-            logger.info("server starts...");
+            log.info("server starts...");
             Socket socket;
             while ((socket = server.accept()) != null) {
-                logger.info("client connected");
+                log.info("client connected");
                 threadPool.execute(new SocketRpcRequestHandlerRunnable(socket));
             }
             threadPool.shutdown();
         } catch (IOException e) {
-            logger.error("occur IOException:", e);
+            log.error("occur IOException:", e);
         }
     }
 }

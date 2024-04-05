@@ -5,15 +5,12 @@ import com.axinstar.rpc.dto.RpcResponse;
 import com.axinstar.rpc.serialize.kryo.KryoSerializer;
 import com.axinstar.rpc.transport.netty.codec.NettyKryoDecoder;
 import com.axinstar.rpc.transport.netty.codec.NettyKryoEncoder;
-import com.axinstar.rpc.utils.checker.RpcMessageChecker;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.util.AttributeKey;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 用于初始化 和 关闭 Bootstrap 对象
@@ -21,9 +18,9 @@ import org.slf4j.LoggerFactory;
  * @author axin
  * @since 2024/04/04
  */
+@Slf4j
 public class NettyClient {
 
-    private static final Logger logger = LoggerFactory.getLogger(NettyClient.class);
     private static final Bootstrap b;
     private static final EventLoopGroup eventLoopGroup;
 
@@ -57,7 +54,7 @@ public class NettyClient {
     }
 
     public static void close() {
-        logger.info("call close method");
+        log.info("call close method");
         eventLoopGroup.shutdownGracefully();
     }
 

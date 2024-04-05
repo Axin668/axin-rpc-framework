@@ -16,8 +16,7 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetSocketAddress;
 
@@ -27,9 +26,9 @@ import java.net.InetSocketAddress;
  * @author axin
  * @since 2024/04/02
  */
+@Slf4j
 public class NettyServer {
 
-    private static final Logger logger = LoggerFactory.getLogger(NettyServer.class);
     private final String host;
     private final int port;
     private final KryoSerializer kryoSerializer;
@@ -76,7 +75,7 @@ public class NettyServer {
             // 等待服务端监听端口关闭
             f.channel().closeFuture().sync();
         } catch (InterruptedException e) {
-            logger.error("occur exception when start server:", e);
+            log.error("occur exception when start server:", e);
         } finally {
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();

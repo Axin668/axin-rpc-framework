@@ -9,8 +9,7 @@ import com.axinstar.rpc.utils.checker.RpcMessageChecker;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.util.AttributeKey;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.atomic.AtomicReference;
@@ -21,9 +20,9 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author axin
  * @since 2024/04/04
  */
+@Slf4j
 public class NettyClientTransport implements ClientTransport {
 
-    private static final Logger logger = LoggerFactory.getLogger(NettyClientTransport.class);
     private final ServiceDiscovery serviceDiscovery;
 
     public NettyClientTransport() {
@@ -39,16 +38,16 @@ public class NettyClientTransport implements ClientTransport {
             if (channel.isActive()) {
                 channel.writeAndFlush(rpcRequest).addListener((ChannelFutureListener) future -> {
                     if (future.isSuccess()) {
-                        logger.info("client send message: {}", rpcRequest);
+                        log.info("client send message: {}", rpcRequest);
                     } else {
                         future.channel().close();
-                        logger.error("Send failed:", future.cause());
+                        log.error("Send failed:", future.cause());
                     }
                 });
                 channel.closeFuture().sync();
                 AttributeKey<RpcResponse> key = AttributeKey.valueOf("rpcResponse" + rpcRequest.getRequestId());
                 RpcResponse rpcResponse = channel.attr(key).get();
-                logger.info("client get rpcResponse from channel:{}", rpcResponse);
+                log.info("client get rpcResponse from channel:{}", rpcResponse);
                 // 校验 RpcResponse 和 RpcRequest
                 RpcMessageChecker.check(rpcResponse, rpcRequest);
                 result.set(rpcResponse.getData());
@@ -57,7 +56,7 @@ public class NettyClientTransport implements ClientTransport {
                 System.exit(0);
             }
         } catch (InterruptedException e) {
-            logger.error("occur exception when send rpc message from client:", e);
+            log.error("occur exception when send rpc message from client:", e);
         }
 
         return result.get();

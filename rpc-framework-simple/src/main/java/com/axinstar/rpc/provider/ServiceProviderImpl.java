@@ -2,8 +2,7 @@ package com.axinstar.rpc.provider;
 
 import com.axinstar.rpc.enumeration.RpcErrorMessageEnum;
 import com.axinstar.rpc.exception.RpcException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
 import java.util.Set;
@@ -13,16 +12,15 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author axin
  * @since 2024/04/05
  */
+@Slf4j
 public class ServiceProviderImpl implements ServiceProvider{
-
-    private static final Logger logger = LoggerFactory.getLogger(ServiceProviderImpl.class);
 
     /**
      * 接口名和服务的对应关系
-     * note: 处理一个接口被两个实现类实现的情况如何处理?
+     * note: 处理一个接口被两个实现类实现的情况如何处理? (通过group分组)
      */
-    private static final Map<String, Object> serviceMap = new ConcurrentHashMap<>();
-    private static final Set<String> registeredService = ConcurrentHashMap.newKeySet();
+    private static Map<String, Object> serviceMap = new ConcurrentHashMap<>();
+    private static Set<String> registeredService = ConcurrentHashMap.newKeySet();
 
     /**
      * note: 可以修改为扫描注解注册
@@ -35,7 +33,7 @@ public class ServiceProviderImpl implements ServiceProvider{
         }
         registeredService.add(serviceName);
         serviceMap.put(serviceName, service);
-        logger.info("Add service: {} and interfaces:{}", serviceName, service.getClass().getInterfaces());
+        log.info("Add service: {} and interfaces:{}", serviceName, service.getClass().getInterfaces());
     }
 
     @Override

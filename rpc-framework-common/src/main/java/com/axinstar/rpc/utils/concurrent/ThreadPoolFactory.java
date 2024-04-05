@@ -11,7 +11,7 @@ import java.util.concurrent.*;
  * @author axin
  * @since 2024/04/03
  */
-public class ThreadPoolFactory {
+public final class ThreadPoolFactory {
 
     /**
      * 线程池参数
