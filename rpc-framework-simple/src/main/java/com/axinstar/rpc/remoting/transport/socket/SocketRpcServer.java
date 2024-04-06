@@ -1,5 +1,6 @@
 package com.axinstar.rpc.remoting.transport.socket;
 
+import com.axinstar.rpc.config.CustomShutdownHook;
 import com.axinstar.rpc.provider.ServiceProvider;
 import com.axinstar.rpc.provider.ServiceProviderImpl;
 import com.axinstar.rpc.registry.ServiceRegistry;
@@ -43,10 +44,10 @@ public class SocketRpcServer {
     private void start() {
         try (ServerSocket server = new ServerSocket()) {
             server.bind(new InetSocketAddress(host, port));
-            log.info("server starts...");
+            CustomShutdownHook.getCustomShutdownHook().clearAll();
             Socket socket;
             while ((socket = server.accept()) != null) {
-                log.info("client connected");
+                log.info("client connected [{}]", socket.getInetAddress());
                 threadPool.execute(new SocketRpcRequestHandlerRunnable(socket));
             }
             threadPool.shutdown();

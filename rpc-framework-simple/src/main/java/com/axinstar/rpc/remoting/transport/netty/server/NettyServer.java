@@ -1,5 +1,6 @@
 package com.axinstar.rpc.remoting.transport.netty.server;
 
+import com.axinstar.rpc.config.CustomShutdownHook;
 import com.axinstar.rpc.remoting.dto.RpcRequest;
 import com.axinstar.rpc.remoting.dto.RpcResponse;
 import com.axinstar.rpc.provider.ServiceProvider;
@@ -72,6 +73,7 @@ public class NettyServer {
                     .option(ChannelOption.SO_BACKLOG, 128);
             // 绑定端口, 同步等待绑定成功
             ChannelFuture f = b.bind(host, port).sync();
+            CustomShutdownHook.getCustomShutdownHook().clearAll();
             // 等待服务端监听端口关闭
             f.channel().closeFuture().sync();
         } catch (InterruptedException e) {
