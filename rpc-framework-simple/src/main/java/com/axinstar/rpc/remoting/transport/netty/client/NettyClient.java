@@ -10,7 +10,11 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+
+import java.net.InetSocketAddress;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * 用于初始化 和 关闭 Bootstrap 对象
@@ -21,15 +25,15 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class NettyClient {
 
-    private static final Bootstrap b;
+    private static final Bootstrap bootstrap;
     private static final EventLoopGroup eventLoopGroup;
 
     // 初始化相关资源比如 EventLoopGroup、Bootstrap
     static {
         eventLoopGroup = new NioEventLoopGroup();
-        b = new Bootstrap();
+        bootstrap = new Bootstrap();
         KryoSerializer kryoSerializer = new KryoSerializer();
-        b.group(eventLoopGroup)
+        bootstrap.group(eventLoopGroup)
                 .channel(NioSocketChannel.class)
                 // 连接的超时时间, 超过这个时间还是建立不上的话则代表连接失败
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000)
@@ -50,12 +54,22 @@ public class NettyClient {
                 });
     }
 
+    @SneakyThrows
+    public Channel doConnect(InetSocketAddress inetSocketAddress) {
+        CompletableFuture<Channel> completableFuture = new CompletableFuture<>();
+        bootstrap.connect(inetSocketAddress).addListener((ChannelFutureListener) future -> {
+            if (future.isSuccess()) {
+                log.info("客户端连接成功!");
+                completableFuture.complete(future.channel());
+            } else {
+                throw new IllegalStateException();
+            }
+        });
+        return completableFuture.get();
+    }
+
     public static void close() {
         log.info("call close method");
         eventLoopGroup.shutdownGracefully();
-    }
-
-    public static Bootstrap getBootstrap() {
-        return b;
     }
 }
