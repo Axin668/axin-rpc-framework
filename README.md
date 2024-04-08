@@ -1,6 +1,6 @@
 # axin-rpc-framework
 
-**模拟简易版RPC框架**
+**模拟简易版 RPC 框架**
 
 **技术选型**: Java+Netty+kryo+Zookeeper
 
@@ -20,16 +20,16 @@
 
 然后使用 IDEA 打开，等待项目初始化完成。
 
-**2.初始化git hooks**
+**2.初始化 git hooks**
 
 执行以下命令:
 
 ```shell
 ➜  axin-rpc-framework git:(master) ✗ chmod +x ./init.sh
-➜  axin-rpc-framework git:(master) ✗ ./init.sh 
+➜  axin-rpc-framework git:(master) ✗ ./init.sh
 ```
 
-`init.sh` 这个脚本的主要作用是将 git commit 钩子拷贝到项目下的 `.git/hooks/` 目录, 这样你每次commit的时候就会执行了。
+`init.sh` 这个脚本的主要作用是将 git commit 钩子拷贝到项目下的 `.git/hooks/` 目录, 这样你每次 commit 的时候就会执行了。
 
 ```shell
 cp config/git-hooks/pre-commit .git/hooks/
@@ -54,11 +54,11 @@ exit $RESULT
 
 IntelliJ IDEA-> Preferences->Plugins->搜索下载CheckStyle 插件，然后按照如下方式进行配置。
 
-![](./images/setting-check-style.png)
+![CheckStyle 插件下载和配置](./images/setting-check-style.png)
 
 配置完成之后，按照如下方式使用这个插件！
 
-![](./images/run-check-style.png)
+![插件使用方式](./images/run-check-style.png)
 
 **4.下载运行 ZooKeeper**
 
