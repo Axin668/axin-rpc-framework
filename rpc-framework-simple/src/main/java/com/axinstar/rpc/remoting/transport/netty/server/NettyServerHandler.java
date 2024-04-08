@@ -3,9 +3,9 @@ package com.axinstar.rpc.remoting.transport.netty.server;
 import com.axinstar.rpc.remoting.dto.RpcRequest;
 import com.axinstar.rpc.remoting.dto.RpcResponse;
 import com.axinstar.rpc.handler.RpcRequestHandler;
-import com.axinstar.rpc.utils.concurrent.ThreadPoolFactoryUtils;
+import com.axinstar.rpc.utils.concurrent.threadpool.CustomThreadPoolConfig;
+import com.axinstar.rpc.utils.concurrent.threadpool.ThreadPoolFactoryUtils;
 import com.axinstar.rpc.factory.SingletonFactory;
-import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -33,7 +33,9 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
 
     public NettyServerHandler() {
         this.rpcRequestHandler = SingletonFactory.getInstance(RpcRequestHandler.class);
-        this.threadPool = ThreadPoolFactoryUtils.createDefaultThreadPool(THREAD_NAME_PREFIX);
+        CustomThreadPoolConfig customThreadPoolConfig = new CustomThreadPoolConfig();
+        customThreadPoolConfig.setCorePoolSize(6);
+        this.threadPool = ThreadPoolFactoryUtils.createCustomThreadPoolIfAbsent(THREAD_NAME_PREFIX, customThreadPoolConfig);
     }
 
     @Override
@@ -47,7 +49,8 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
                 log.info(String.format("server get result: %s", result.toString()));
                 if (ctx.channel().isActive() && ctx.channel().isWritable()) {
                     // 返回方法执行结果给客户端
-                    ctx.writeAndFlush(RpcResponse.success(result, rpcRequest.getRequestId()));
+                    RpcResponse<Object> rpcResponse = RpcResponse.success(result, rpcRequest.getRequestId());
+                    ctx.writeAndFlush(rpcResponse).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
                 } else {
                     log.error("not writable now, message dropped");
                 }

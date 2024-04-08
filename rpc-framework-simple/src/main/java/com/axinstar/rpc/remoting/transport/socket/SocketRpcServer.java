@@ -5,7 +5,7 @@ import com.axinstar.rpc.provider.ServiceProvider;
 import com.axinstar.rpc.provider.ServiceProviderImpl;
 import com.axinstar.rpc.registry.ServiceRegistry;
 import com.axinstar.rpc.registry.ZkServiceRegistry;
-import com.axinstar.rpc.utils.concurrent.ThreadPoolFactoryUtils;
+import com.axinstar.rpc.utils.concurrent.threadpool.ThreadPoolFactoryUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -30,7 +30,7 @@ public class SocketRpcServer {
     public SocketRpcServer(String host, int port) {
         this.host = host;
         this.port = port;
-        threadPool = ThreadPoolFactoryUtils.createDefaultThreadPool("socket-server-rpc-pool");
+        threadPool = ThreadPoolFactoryUtils.createCustomThreadPoolIfAbsent("socket-server-rpc-pool");
         serviceRegistry = new ZkServiceRegistry();
         serviceProvider = new ServiceProviderImpl();
     }
