@@ -2,6 +2,7 @@ package com.axinstar.rpc.remoting.transport.netty.client;
 
 import com.axinstar.rpc.remoting.dto.RpcResponse;
 
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -13,14 +14,10 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class UnprocessedRequests {
 
-    private static ConcurrentHashMap<String, CompletableFuture<RpcResponse>> unprocessedResponseFutures = new ConcurrentHashMap<>();
+    private static Map<String, CompletableFuture<RpcResponse>> unprocessedResponseFutures = new ConcurrentHashMap<>();
 
     public void put(String requestId, CompletableFuture<RpcResponse> future) {
         unprocessedResponseFutures.put(requestId, future);
-    }
-
-    public void remove(String requestId) {
-        unprocessedResponseFutures.remove(requestId);
     }
 
     public void complete(RpcResponse rpcResponse) {

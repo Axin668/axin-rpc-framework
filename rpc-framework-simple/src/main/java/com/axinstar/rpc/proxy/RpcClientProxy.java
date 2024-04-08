@@ -1,5 +1,6 @@
 package com.axinstar.rpc.proxy;
 
+import com.axinstar.rpc.remoting.dto.RpcMessageChecker;
 import com.axinstar.rpc.remoting.dto.RpcRequest;
 import com.axinstar.rpc.remoting.dto.RpcResponse;
 import com.axinstar.rpc.remoting.transport.ClientTransport;
@@ -52,7 +53,7 @@ public class RpcClientProxy implements InvocationHandler {
     @SuppressWarnings("unchecked")
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) {
-        log.info("Call invoke method and invoked method: {}", method.getName());
+        log.info("invoked method: [{}]", method.getName());
         RpcRequest rpcRequest = RpcRequest.builder()
                 .methodName(method.getName())
                 .parameters(args)
@@ -60,15 +61,16 @@ public class RpcClientProxy implements InvocationHandler {
                 .paramTypes(method.getParameterTypes())
                 .requestId(UUID.randomUUID().toString())
                 .build();
-        Object result = null;
+        RpcResponse rpcResponse = null;
         if (clientTransport instanceof NettyClientTransport) {
             CompletableFuture<RpcResponse> completableFuture = (CompletableFuture<RpcResponse>) clientTransport.sendRpcRequest(rpcRequest);
-            result = completableFuture.get().getData();
+            rpcResponse = completableFuture.get();
         }
         if (clientTransport instanceof SocketRpcClient) {
-            RpcResponse rpcResponse = (RpcResponse) clientTransport.sendRpcRequest(rpcRequest);
-            result = rpcResponse.getData();
+            rpcResponse = (RpcResponse) clientTransport.sendRpcRequest(rpcRequest);
         }
-        return result;
+        // 校验 RpcResponse 和 RpcRequest
+        RpcMessageChecker.check(rpcResponse, rpcRequest);
+        return rpcResponse.getData();
     }
 }
