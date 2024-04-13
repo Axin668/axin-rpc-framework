@@ -1,12 +1,16 @@
 package com.axinstar.rpc.remoting.transport.netty.client;
 
+import com.axinstar.rpc.enumeration.RpcMessageTypeEnum;
 import com.axinstar.rpc.factory.SingletonFactory;
+import com.axinstar.rpc.remoting.dto.RpcRequest;
 import com.axinstar.rpc.remoting.dto.RpcResponse;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.*;
+import io.netty.handler.timeout.IdleState;
+import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.ReferenceCountUtil;
 import lombok.extern.slf4j.Slf4j;
-import io.netty.channel.SimpleChannelInboundHandler;
+
+import java.net.InetSocketAddress;
 
 /**
  * 自定义客户端 ChannelHandler 来处理服务端发送过来的数据
@@ -39,6 +43,23 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter {
             unprocessedRequests.complete(rpcResponse);
         } finally {
             ReferenceCountUtil.release(msg);
+        }
+    }
+
+    @Override
+    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+        if (evt instanceof IdleStateEvent) {
+            IdleState state = ((IdleStateEvent) evt).state();
+            if (state == IdleState.WRITER_IDLE) {
+                log.info("write idle happen [{}]", ctx.channel().remoteAddress());
+                Channel channel = ChannelProvider.get((InetSocketAddress) ctx.channel().remoteAddress());
+                RpcRequest rpcRequest = RpcRequest.builder()
+                        .rpcMessageTypeEnum(RpcMessageTypeEnum.HEART_BEAT)
+                        .build();
+                channel.writeAndFlush(rpcRequest).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
+            }
+        } else {
+            super.userEventTriggered(ctx, evt);
         }
     }
 
