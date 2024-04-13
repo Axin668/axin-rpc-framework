@@ -6,6 +6,5 @@ package com.axinstar.rpc.enumeration;
  */
 public enum RpcMessageTypeEnum {
 
-    HEART_BEAT,
-    RPC_REQUEST
+    HEART_BEAT
 }
