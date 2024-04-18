@@ -1,5 +1,7 @@
 package com.axinstar.rpc;
 
+import com.axinstar.rpc.api.Hello;
+import com.axinstar.rpc.api.HelloService;
 import lombok.extern.slf4j.Slf4j;
 
 /**

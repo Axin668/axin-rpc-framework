@@ -1,5 +1,7 @@
 package com.axinstar.rpc;
 
+import com.axinstar.rpc.api.Hello;
+import com.axinstar.rpc.api.HelloService;
 import com.axinstar.rpc.remoting.transport.ClientTransport;
 import com.axinstar.rpc.proxy.RpcClientProxy;
 import com.axinstar.rpc.remoting.transport.netty.client.NettyClientTransport;

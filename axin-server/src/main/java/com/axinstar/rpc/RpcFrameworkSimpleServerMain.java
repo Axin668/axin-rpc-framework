@@ -1,5 +1,6 @@
 package com.axinstar.rpc;
 
+import com.axinstar.rpc.api.HelloService;
 import com.axinstar.rpc.remoting.transport.socket.SocketRpcServer;
 
 /**
