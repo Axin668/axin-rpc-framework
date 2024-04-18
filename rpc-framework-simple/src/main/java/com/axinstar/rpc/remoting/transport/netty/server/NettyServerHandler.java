@@ -3,7 +3,7 @@ package com.axinstar.rpc.remoting.transport.netty.server;
 import com.axinstar.rpc.enumeration.RpcMessageTypeEnum;
 import com.axinstar.rpc.remoting.dto.RpcRequest;
 import com.axinstar.rpc.remoting.dto.RpcResponse;
-import com.axinstar.rpc.handler.RpcRequestHandler;
+import com.axinstar.rpc.remoting.handler.RpcRequestHandler;
 import com.axinstar.rpc.factory.SingletonFactory;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;

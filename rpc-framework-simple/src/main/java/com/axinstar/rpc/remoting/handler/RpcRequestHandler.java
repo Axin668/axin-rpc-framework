@@ -1,4 +1,4 @@
-package com.axinstar.rpc.handler;
+package com.axinstar.rpc.remoting.handler;
 
 import com.axinstar.rpc.remoting.dto.RpcRequest;
 import com.axinstar.rpc.remoting.dto.RpcResponse;
