@@ -1,4 +1,4 @@
-package com.axinstar.rpc.api;
+package com.axinstar.rpc;
 
 /**
  * @author axin
