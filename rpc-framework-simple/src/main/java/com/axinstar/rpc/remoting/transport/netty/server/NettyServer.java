@@ -34,11 +34,11 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class NettyServer {
 
-    private String host;
-    private int port;
-    private KryoSerializer kryoSerializer;
-    private ServiceRegistry serviceRegistry;
-    private ServiceProvider serviceProvider;
+    private final String host;
+    private final int port;
+    private final KryoSerializer kryoSerializer;
+    private final ServiceRegistry serviceRegistry;
+    private final ServiceProvider serviceProvider;
 
     public NettyServer(String host, int port) {
         this.host = host;

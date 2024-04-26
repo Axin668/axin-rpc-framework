@@ -21,7 +21,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 用于初始化 和 关闭 Bootstrap 对象
+ * initialize and close Bootstrap object
  *
  * @author axin
  * @since 2024/04/04
@@ -32,7 +32,7 @@ public class NettyClient {
     private static final Bootstrap bootstrap;
     private static final EventLoopGroup eventLoopGroup;
 
-    // 初始化相关资源比如 EventLoopGroup、Bootstrap
+    // initialize resources such as EventLoopGroup, Bootstrap
     static {
         eventLoopGroup = new NioEventLoopGroup();
         bootstrap = new Bootstrap();
@@ -40,14 +40,17 @@ public class NettyClient {
         bootstrap.group(eventLoopGroup)
                 .channel(NioSocketChannel.class)
                 .handler(new LoggingHandler(LogLevel.INFO))
-                // 连接的超时时间, 超过这个时间还是建立不上的话则代表连接失败
+                // The timeout period of the connection
+                // If this time is exceeded or the connection cannot be established, the connection fails
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000)
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel ch) {
-                        // 如果 15 秒之内没有发送数据给服务端的话, 就发送一次心跳请求
+                        // If no data is sent to the server within 15 seconds, a heartbeat request will be sent
                         ch.pipeline().addLast(new IdleStateHandler(0, 5, 0, TimeUnit.SECONDS));
-                        /*自定义序列化编解码器*/
+                        /*
+                        * config custom serialization codec
+                        * */
                         // ByteBuf -> RpcResponse
                         ch.pipeline().addLast(new NettyKryoDecoder(kryoSerializer, RpcResponse.class));
                         // RpcRequest -> ByteBuf
@@ -57,12 +60,18 @@ public class NettyClient {
                 });
     }
 
+    /**
+     * connect server and get the channel, so that you can send rpc message to server
+     *
+     * @param inetSocketAddress server address
+     * @return the channel
+     */
     @SneakyThrows
     public Channel doConnect(InetSocketAddress inetSocketAddress) {
         CompletableFuture<Channel> completableFuture = new CompletableFuture<>();
         bootstrap.connect(inetSocketAddress).addListener((ChannelFutureListener) future -> {
             if (future.isSuccess()) {
-                log.info("客户端连接成功!");
+                log.info("The client has connected [{}] successfully!", inetSocketAddress.toString());
                 completableFuture.complete(future.channel());
             } else {
                 throw new IllegalStateException();
@@ -72,7 +81,6 @@ public class NettyClient {
     }
 
     public static void close() {
-        log.info("call close method");
         eventLoopGroup.shutdownGracefully();
     }
 }
