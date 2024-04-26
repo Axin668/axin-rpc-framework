@@ -21,14 +21,14 @@ public class ServiceProviderImpl implements ServiceProvider {
      * 接口名和服务的对应关系
      * note: 处理一个接口被两个实现类实现的情况如何处理? (通过group分组)
      */
-    private static Map<String, Object> serviceMap = new ConcurrentHashMap<>();
-    private static Set<String> registeredService = ConcurrentHashMap.newKeySet();
+    private static final Map<String, Object> serviceMap = new ConcurrentHashMap<>();
+    private static final Set<String> registeredService = ConcurrentHashMap.newKeySet();
 
     /**
      * note: 可以修改为扫描注解注册
      */
     @Override
-    public <T> void addServiceProvider(T service, Class<T> serviceClass) {
+    public void addServiceProvider(Object service, Class<?> serviceClass) {
         String serviceName = serviceClass.getCanonicalName();
         if (registeredService.contains(serviceName)) {
             return;

@@ -16,6 +16,8 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * zookeeper 客户端 Curator 工具类
+ *
  * @author axin
  * @since 2024/04/04
  */
@@ -23,12 +25,12 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class CuratorUtils {
 
     private static final int BASE_SLEEP_TIME = 100;
-    private static final int MAX_RETRIES = 5;
+    private static final int MAX_RETRIES = 3;
     private static final String CONNECT_STRING = "127.0.0.1:2181";
     public static final String ZK_REGISTER_ROOT_PATH = "/my-rpc";
-    private static Map<String, List<String>> serviceAddressMap = new ConcurrentHashMap<>();
-    private static Set<String> registeredPathSet = ConcurrentHashMap.newKeySet();
-    private static CuratorFramework zkClient;
+    private static final Map<String, List<String>> serviceAddressMap = new ConcurrentHashMap<>();
+    private static final Set<String> registeredPathSet = ConcurrentHashMap.newKeySet();
+    private static final CuratorFramework zkClient;
 
     static {
         zkClient = getZkClient();
@@ -72,7 +74,7 @@ public final class CuratorUtils {
         try {
             result = zkClient.getChildren().forPath(servicePath);
             serviceAddressMap.put(serviceName, result);
-            registerWatcher(zkClient, serviceName);
+            registerWatcher(serviceName);
         } catch (Exception e) {
             throw new RpcException(e.getMessage(), e.getCause());
         }
@@ -108,12 +110,11 @@ public final class CuratorUtils {
     /**
      * 注册监听指定节点
      *
-     * @param zkClient      zookeeper客户端
      * @param serviceName   服务对象接口名 eg:com.axinstar.rpc.HelloService
      */
-    private static void registerWatcher(CuratorFramework zkClient, String serviceName) {
+    private static void registerWatcher(String serviceName) {
         String servicePath = CuratorUtils.ZK_REGISTER_ROOT_PATH + "/" + serviceName;
-        PathChildrenCache pathChildrenCache = new PathChildrenCache(zkClient, servicePath, true);
+        PathChildrenCache pathChildrenCache = new PathChildrenCache(CuratorUtils.zkClient, servicePath, true);
         PathChildrenCacheListener pathChildrenCacheListener = (curatorFramework, pathChildrenCacheEvent) -> {
             List<String> serviceAddresses = curatorFramework.getChildren().forPath(servicePath);
             serviceAddressMap.put(serviceName, serviceAddresses);

@@ -1,5 +1,6 @@
 package com.axinstar.rpc;
 
+import com.axinstar.rpc.annotation.RpcService;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -7,7 +8,12 @@ import lombok.extern.slf4j.Slf4j;
  * @since 2024/03/30
  */
 @Slf4j
+@RpcService
 public class HelloServiceImpl implements HelloService {
+
+    static {
+        System.out.println("Hello !!! This is a rpc service");
+    }
 
     @Override
     public String hello(Hello hello) {
