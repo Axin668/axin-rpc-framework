@@ -29,11 +29,11 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class NettyClient {
 
-    private static final Bootstrap bootstrap;
-    private static final EventLoopGroup eventLoopGroup;
+    private final Bootstrap bootstrap;
+    private final EventLoopGroup eventLoopGroup;
 
     // initialize resources such as EventLoopGroup, Bootstrap
-    static {
+    public NettyClient() {
         eventLoopGroup = new NioEventLoopGroup();
         bootstrap = new Bootstrap();
         KryoSerializer kryoSerializer = new KryoSerializer();
@@ -80,7 +80,7 @@ public class NettyClient {
         return completableFuture.get();
     }
 
-    public static void close() {
+    public void close() {
         eventLoopGroup.shutdownGracefully();
     }
 }

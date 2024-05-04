@@ -1,9 +1,11 @@
-package com.axinstar.rpc.registry;
+package com.axinstar.rpc.registry.zk;
 
 import com.axinstar.rpc.loadbalance.LoadBalance;
 import com.axinstar.rpc.loadbalance.RandomLoadBalance;
-import com.axinstar.rpc.utils.zk.CuratorUtils;
+import com.axinstar.rpc.registry.util.CuratorUtils;
+import com.axinstar.rpc.registry.ServiceDiscovery;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.curator.framework.CuratorFramework;
 
 import java.net.InetSocketAddress;
 import java.util.List;
@@ -25,7 +27,8 @@ public class ZkServiceDiscovery implements ServiceDiscovery {
 
     @Override
     public InetSocketAddress lookupService(String serviceName) {
-        List<String> serviceUrlList = CuratorUtils.getChildrenNodes(serviceName);
+        CuratorFramework zkClient = CuratorUtils.getZkClient();
+        List<String> serviceUrlList = CuratorUtils.getChildrenNodes(zkClient, serviceName);
         // 负载均衡
         String targetServiceUrl = loadBalance.selectServiceAddress(serviceUrlList);
         log.info("成功找到服务地址:[{}]", targetServiceUrl);

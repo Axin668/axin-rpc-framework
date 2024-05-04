@@ -1,6 +1,6 @@
 package com.axinstar.rpc.remoting.transport.netty.client;
 
-import com.axinstar.rpc.enumeration.RpcMessageTypeEnum;
+import com.axinstar.rpc.enumeration.RpcMessageType;
 import com.axinstar.rpc.factory.SingletonFactory;
 import com.axinstar.rpc.remoting.dto.RpcRequest;
 import com.axinstar.rpc.remoting.dto.RpcResponse;
@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.net.InetSocketAddress;
 
 /**
- * 自定义客户端 ChannelHandler 来处理服务端发送过来的数据
+ * Customize the client ChannelHandler to process the data sent by the server
  *
  * <p>
  * 如果继承自 SimpleChannelInboundHandler 的话就不要考虑 ByteBuf 的释放, {@link SimpleChannelInboundHandler} 内部的
@@ -26,21 +26,25 @@ import java.net.InetSocketAddress;
 public class NettyClientHandler extends ChannelInboundHandlerAdapter {
 
     private final UnprocessedRequests unprocessedRequests;
+    private final ChannelProvider channelProvider;
 
     public NettyClientHandler() {
         this.unprocessedRequests = SingletonFactory.getInstance(UnprocessedRequests.class);
+        this.channelProvider = SingletonFactory.getInstance(ChannelProvider.class);
     }
 
 
     /**
-     * 读取服务端传输的消息
+     * Read the message transmitted by the server
      */
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+    public void channelRead(ChannelHandlerContext ctx, Object msg) {
         try {
             log.info("client receive msg: [{}]", msg);
-            RpcResponse rpcResponse = (RpcResponse) msg;
-            unprocessedRequests.complete(rpcResponse);
+            if (msg instanceof RpcResponse) {
+                RpcResponse<Object> rpcResponse = (RpcResponse<Object>) msg;
+                unprocessedRequests.complete(rpcResponse);
+            }
         } finally {
             ReferenceCountUtil.release(msg);
         }
@@ -52,9 +56,9 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter {
             IdleState state = ((IdleStateEvent) evt).state();
             if (state == IdleState.WRITER_IDLE) {
                 log.info("write idle happen [{}]", ctx.channel().remoteAddress());
-                Channel channel = ChannelProvider.get((InetSocketAddress) ctx.channel().remoteAddress());
+                Channel channel = channelProvider.get((InetSocketAddress) ctx.channel().remoteAddress());
                 RpcRequest rpcRequest = RpcRequest.builder()
-                        .rpcMessageTypeEnum(RpcMessageTypeEnum.HEART_BEAT)
+                        .rpcMessageType(RpcMessageType.HEART_BEAT)
                         .build();
                 channel.writeAndFlush(rpcRequest).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
             }
@@ -64,7 +68,7 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter {
     }
 
     /**
-     * 处理客户端消息发生异常的时候被调用
+     * Called when an exception occurs in processing a client message
      */
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {

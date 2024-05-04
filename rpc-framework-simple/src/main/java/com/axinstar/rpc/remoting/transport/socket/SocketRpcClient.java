@@ -3,7 +3,7 @@ package com.axinstar.rpc.remoting.transport.socket;
 import com.axinstar.rpc.remoting.dto.RpcRequest;
 import com.axinstar.rpc.exception.RpcException;
 import com.axinstar.rpc.registry.ServiceDiscovery;
-import com.axinstar.rpc.registry.ZkServiceDiscovery;
+import com.axinstar.rpc.registry.zk.ZkServiceDiscovery;
 import com.axinstar.rpc.remoting.transport.ClientTransport;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

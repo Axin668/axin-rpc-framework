@@ -1,7 +1,7 @@
 package com.axinstar.rpc.config;
 
 import com.axinstar.rpc.utils.concurrent.threadpool.ThreadPoolFactoryUtils;
-import com.axinstar.rpc.utils.zk.CuratorUtils;
+import com.axinstar.rpc.registry.util.CuratorUtils;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -22,7 +22,7 @@ public class CustomShutdownHook {
     public void clearAll() {
         log.info("addShutdownHook for clearAll");
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            CuratorUtils.clearRegistry();
+            CuratorUtils.clearRegistry(CuratorUtils.getZkClient());
             ThreadPoolFactoryUtils.shutDownAllThreadPool();
         }));
     }

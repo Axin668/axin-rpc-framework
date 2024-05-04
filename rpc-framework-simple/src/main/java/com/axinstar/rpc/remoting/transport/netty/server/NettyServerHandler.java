@@ -1,6 +1,6 @@
 package com.axinstar.rpc.remoting.transport.netty.server;
 
-import com.axinstar.rpc.enumeration.RpcMessageTypeEnum;
+import com.axinstar.rpc.enumeration.RpcMessageType;
 import com.axinstar.rpc.remoting.dto.RpcRequest;
 import com.axinstar.rpc.remoting.dto.RpcResponse;
 import com.axinstar.rpc.remoting.handler.RpcRequestHandler;
@@ -37,7 +37,7 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
         try {
             log.info("server receive msg: [{}]", msg);
             RpcRequest rpcRequest = (RpcRequest) msg;
-            if (rpcRequest.getRpcMessageTypeEnum() == RpcMessageTypeEnum.HEART_BEAT) {
+            if (rpcRequest.getRpcMessageType() == RpcMessageType.HEART_BEAT) {
                 log.info("receive heart beat msg from client");
                 return;
             }

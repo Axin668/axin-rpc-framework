@@ -2,6 +2,7 @@ package com.axinstar.rpc.java;
 
 import com.axinstar.rpc.HelloService;
 import com.axinstar.rpc.HelloServiceImpl;
+import com.axinstar.rpc.provider.ServiceProviderImpl;
 import com.axinstar.rpc.remoting.transport.netty.server.NettyServer;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -16,6 +17,7 @@ public class NettyServerMain2 {
         AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(NettyServerMain.class);
         NettyServer nettyServer = applicationContext.getBean(NettyServer.class);
         nettyServer.start();
-        nettyServer.publishService(helloService, HelloService.class);
+        ServiceProviderImpl serviceProvider = new ServiceProviderImpl();
+        serviceProvider.publishService(helloService);
     }
 }

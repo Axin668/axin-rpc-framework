@@ -1,13 +1,8 @@
 package com.axinstar.rpc.remoting.transport.netty.server;
 
-import com.axinstar.rpc.annotation.RpcService;
 import com.axinstar.rpc.config.CustomShutdownHook;
 import com.axinstar.rpc.remoting.dto.RpcRequest;
 import com.axinstar.rpc.remoting.dto.RpcResponse;
-import com.axinstar.rpc.provider.ServiceProvider;
-import com.axinstar.rpc.provider.ServiceProviderImpl;
-import com.axinstar.rpc.registry.ServiceRegistry;
-import com.axinstar.rpc.registry.ZkServiceRegistry;
 import com.axinstar.rpc.remoting.transport.netty.codec.kryo.NettyKryoDecoder;
 import com.axinstar.rpc.remoting.transport.netty.codec.kryo.NettyKryoEncoder;
 import com.axinstar.rpc.serialize.kryo.KryoSerializer;
@@ -21,17 +16,12 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.timeout.IdleStateHandler;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
-import java.net.InetSocketAddress;
-import java.util.Map;
+import java.net.InetAddress;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -43,23 +33,14 @@ import java.util.concurrent.TimeUnit;
  */
 @Slf4j
 @Component
-@PropertySource("classpath:rpc.properties")
-public class NettyServer implements InitializingBean, ApplicationContextAware {
+public class NettyServer implements InitializingBean {
 
-    @Value("${rpc.server.host}")
-    private String host;
-    @Value("${rpc.server.port}")
-    private int port;
     private final KryoSerializer kryoSerializer = new KryoSerializer();
-    private final ServiceRegistry serviceRegistry = new ZkServiceRegistry();
-    private final ServiceProvider serviceProvider = new ServiceProviderImpl();
+    public static final int PORT = 9998;
 
-    public void publishService(Object service, Class<?> serviceClass) {
-        serviceProvider.addServiceProvider(service, serviceClass);
-        serviceRegistry.registerService(serviceClass.getCanonicalName(), new InetSocketAddress(host, port));
-    }
-
+    @SneakyThrows
     public void start() {
+        String host = InetAddress.getLocalHost().getHostAddress();
         NioEventLoopGroup bossGroup = new NioEventLoopGroup();
         NioEventLoopGroup workerGroup = new NioEventLoopGroup();
         try {
@@ -86,7 +67,7 @@ public class NettyServer implements InitializingBean, ApplicationContextAware {
                     // 表示系统用于临时存放已完成三次握手的请求的队列的最大长度, 如果连接建立频繁, 服务器创建新连接较慢, 可以适当调大这个参数
                     .option(ChannelOption.SO_BACKLOG, 128);
             // 绑定端口, 同步等待绑定成功
-            ChannelFuture f = b.bind(host, port).sync();
+            ChannelFuture f = b.bind(host, PORT).sync();
             // 等待服务端监听端口关闭
             f.channel().closeFuture().sync();
         } catch (InterruptedException e) {
@@ -104,12 +85,5 @@ public class NettyServer implements InitializingBean, ApplicationContextAware {
     @Override
     public void afterPropertiesSet() {
         CustomShutdownHook.getCustomShutdownHook().clearAll();
-    }
-
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        // 获得所有被 RpcService 注解的类
-        Map<String, Object> registeredBeanMap = applicationContext.getBeansWithAnnotation(RpcService.class);
-        registeredBeanMap.values().forEach(o -> publishService(o, o.getClass().getInterfaces()[0]));
     }
 }

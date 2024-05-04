@@ -1,6 +1,6 @@
 package com.axinstar.rpc.exception;
 
-import com.axinstar.rpc.enumeration.RpcErrorMessageEnum;
+import com.axinstar.rpc.enumeration.RpcErrorMessage;
 
 /**
  * @author axin
@@ -8,15 +8,15 @@ import com.axinstar.rpc.enumeration.RpcErrorMessageEnum;
  */
 public class RpcException extends RuntimeException {
 
-    public RpcException(RpcErrorMessageEnum rpcErrorMessageEnum, String detail) {
-        super(rpcErrorMessageEnum.getMessage() + ":" + detail);
+    public RpcException(RpcErrorMessage rpcErrorMessage, String detail) {
+        super(rpcErrorMessage.getMessage() + ":" + detail);
     }
 
     public RpcException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public RpcException(RpcErrorMessageEnum rpcErrorMessageEnum) {
-        super(rpcErrorMessageEnum.getMessage());
+    public RpcException(RpcErrorMessage rpcErrorMessage) {
+        super(rpcErrorMessage.getMessage());
     }
 }

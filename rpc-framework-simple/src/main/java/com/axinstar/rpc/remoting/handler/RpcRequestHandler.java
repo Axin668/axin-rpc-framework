@@ -1,5 +1,6 @@
 package com.axinstar.rpc.remoting.handler;
 
+import com.axinstar.rpc.factory.SingletonFactory;
 import com.axinstar.rpc.remoting.dto.RpcRequest;
 import com.axinstar.rpc.remoting.dto.RpcResponse;
 import com.axinstar.rpc.enumeration.RpcResponseCode;
@@ -20,7 +21,11 @@ import java.lang.reflect.Method;
 @Slf4j
 public class RpcRequestHandler {
 
-    private static ServiceProvider serviceProvider = new ServiceProviderImpl();
+    private final ServiceProvider serviceProvider;
+
+    public RpcRequestHandler() {
+        serviceProvider = SingletonFactory.getInstance(ServiceProviderImpl.class);
+    }
 
     /**
      * 处理 rpcRequest: 调用对应的方法, 然后返回方法执行结果

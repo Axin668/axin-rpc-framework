@@ -4,7 +4,7 @@ import com.axinstar.rpc.config.CustomShutdownHook;
 import com.axinstar.rpc.provider.ServiceProvider;
 import com.axinstar.rpc.provider.ServiceProviderImpl;
 import com.axinstar.rpc.registry.ServiceRegistry;
-import com.axinstar.rpc.registry.ZkServiceRegistry;
+import com.axinstar.rpc.registry.zk.ZkServiceRegistry;
 import com.axinstar.rpc.utils.concurrent.threadpool.ThreadPoolFactoryUtils;
 import lombok.extern.slf4j.Slf4j;
 

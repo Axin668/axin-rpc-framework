@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public final class SingletonFactory {
 
-    private static Map<String, Object> objectMap = new HashMap<>();
+    private static final Map<String, Object> OBJECT_MAP = new HashMap<>();
 
     private SingletonFactory() {
 
@@ -19,12 +19,12 @@ public final class SingletonFactory {
 
     public static <T> T getInstance(Class<T> c) {
         String key = c.toString();
-        Object instance = objectMap.get(key);
+        Object instance = OBJECT_MAP.get(key);
         synchronized (c) {
             if (instance == null) {
                 try {
                     instance = c.newInstance();
-                    objectMap.put(key, instance);
+                    OBJECT_MAP.put(key, instance);
                 } catch (IllegalAccessException | InstantiationException e) {
                     throw new RuntimeException(e.getMessage(), e);
                 }

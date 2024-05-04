@@ -7,21 +7,21 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 未处理的请求
+ * unprocessed requests by the server
  *
  * @author axin
  * @since 2024/04/06
  */
 public class UnprocessedRequests {
 
-    private static Map<String, CompletableFuture<RpcResponse>> unprocessedResponseFutures = new ConcurrentHashMap<>();
+    private static final Map<String, CompletableFuture<RpcResponse<Object>>> UNPROCESSED_RESPONSE_FUTURES = new ConcurrentHashMap<>();
 
-    public void put(String requestId, CompletableFuture<RpcResponse> future) {
-        unprocessedResponseFutures.put(requestId, future);
+    public void put(String requestId, CompletableFuture<RpcResponse<Object>> future) {
+        UNPROCESSED_RESPONSE_FUTURES.put(requestId, future);
     }
 
-    public void complete(RpcResponse rpcResponse) {
-        CompletableFuture<RpcResponse> future = unprocessedResponseFutures.remove(rpcResponse.getRequestId());
+    public void complete(RpcResponse<Object> rpcResponse) {
+        CompletableFuture<RpcResponse<Object>> future = UNPROCESSED_RESPONSE_FUTURES.remove(rpcResponse.getRequestId());
         if (future != null) {
             future.complete(rpcResponse);
         } else {
