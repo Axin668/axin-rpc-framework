@@ -1,9 +1,8 @@
 package com.axinstar.rpc.remoting.handler;
 
+import com.axinstar.rpc.entity.RpcServiceProperties;
 import com.axinstar.rpc.factory.SingletonFactory;
 import com.axinstar.rpc.remoting.dto.RpcRequest;
-import com.axinstar.rpc.remoting.dto.RpcResponse;
-import com.axinstar.rpc.enumeration.RpcResponseCode;
 import com.axinstar.rpc.exception.RpcException;
 import com.axinstar.rpc.provider.ServiceProvider;
 import com.axinstar.rpc.provider.ServiceProviderImpl;
@@ -31,8 +30,13 @@ public class RpcRequestHandler {
      * 处理 rpcRequest: 调用对应的方法, 然后返回方法执行结果
      */
     public Object handle(RpcRequest rpcRequest) {
+        RpcServiceProperties rpcServiceProperties = RpcServiceProperties.builder()
+                .serviceName(rpcRequest.getInterfaceName())
+                .version(rpcRequest.getVersion())
+                .group(rpcRequest.getGroup())
+                .build();
         // 通过注册中心获取到目标类(客户端需要调用类)
-        Object service = serviceProvider.getServiceProvider(rpcRequest.getInterfaceName());
+        Object service = serviceProvider.getServiceProvider(rpcServiceProperties);
         return invokeTargetMethod(rpcRequest, service);
     }
 
@@ -47,9 +51,6 @@ public class RpcRequestHandler {
         Object result;
         try {
             Method method = service.getClass().getMethod(rpcRequest.getMethodName(), rpcRequest.getParamTypes());
-            if (method == null) {
-                return RpcResponse.fail(RpcResponseCode.NOT_FOUND_METHOD);
-            }
             result = method.invoke(service, rpcRequest.getParameters());
             log.info("service:[{}] successful invoke method:[{}]", rpcRequest.getInterfaceName(), rpcRequest.getMethodName());
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | IllegalArgumentException e) {

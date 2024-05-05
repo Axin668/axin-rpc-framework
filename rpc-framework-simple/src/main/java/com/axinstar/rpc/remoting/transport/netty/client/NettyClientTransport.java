@@ -1,5 +1,6 @@
 package com.axinstar.rpc.remoting.transport.netty.client;
 
+import com.axinstar.rpc.entity.RpcServiceProperties;
 import com.axinstar.rpc.factory.SingletonFactory;
 import com.axinstar.rpc.remoting.dto.RpcRequest;
 import com.axinstar.rpc.remoting.dto.RpcResponse;
@@ -36,7 +37,15 @@ public class NettyClientTransport implements ClientTransport {
     public CompletableFuture<RpcResponse<Object>> sendRpcRequest(RpcRequest rpcRequest) {
         // build return value
         CompletableFuture<RpcResponse<Object>> resultFuture = new CompletableFuture<>();
-        InetSocketAddress inetSocketAddress = serviceDiscovery.lookupService(rpcRequest.getInterfaceName());
+        // build rpc service name by rpcRequest
+        String rpcServiceName = RpcServiceProperties.builder()
+                .serviceName(rpcRequest.getInterfaceName())
+                .group(rpcRequest.getGroup())
+                .version(rpcRequest.getVersion())
+                .build().toRpcServiceName();
+        // get server address
+        InetSocketAddress inetSocketAddress = serviceDiscovery.lookupService(rpcServiceName);
+        // get server address related channel
         Channel channel = channelProvider.get(inetSocketAddress);
         if (channel != null && channel.isActive()) {
             // put unprocessed request

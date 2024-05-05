@@ -1,5 +1,7 @@
-package com.axinstar.rpc;
+package com.axinstar.rpc.serviceImpl;
 
+import com.axinstar.rpc.Hello;
+import com.axinstar.rpc.HelloService;
 import com.axinstar.rpc.annotation.RpcService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -8,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
  * @since 2024/03/30
  */
 @Slf4j
-@RpcService
+@RpcService(group = "test1", version = "version1")
 public class HelloServiceImpl implements HelloService {
 
     static {

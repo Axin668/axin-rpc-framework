@@ -1,23 +1,19 @@
-package com.axinstar.rpc.java;
-
-import com.axinstar.rpc.HelloService;
-import com.axinstar.rpc.HelloServiceImpl;
-import com.axinstar.rpc.provider.ServiceProviderImpl;
 import com.axinstar.rpc.remoting.transport.netty.server.NettyServer;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
 
 /**
+ * Server: Automatic registration service via @RpcService annotation
+ *
  * @author axin
- * @since 2024/04/13
+ * @since 2024/04/02
  */
-public class NettyServerMain2 {
+@ComponentScan("com.axinstar.rpc")
+public class NettyServerMain {
 
     public static void main(String[] args) {
-        HelloService helloService = new HelloServiceImpl();
         AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(NettyServerMain.class);
         NettyServer nettyServer = applicationContext.getBean(NettyServer.class);
         nettyServer.start();
-        ServiceProviderImpl serviceProvider = new ServiceProviderImpl();
-        serviceProvider.publishService(helloService);
     }
 }

@@ -1,20 +1,19 @@
 package com.axinstar.rpc;
 
 import com.axinstar.rpc.entity.RpcServiceProperties;
-import com.axinstar.rpc.remoting.transport.ClientTransport;
 import com.axinstar.rpc.proxy.RpcClientProxy;
 import com.axinstar.rpc.remoting.transport.netty.client.NettyClientTransport;
 
 /**
  * @author axin
- * @since 2024/04/02
+ * @since 2024/05/05
  */
-public class NettyClientMain {
+public class NettyClientMain2 {
 
     public static void main(String[] args) throws InterruptedException {
-        ClientTransport rpcClient = new NettyClientTransport();
+        NettyClientTransport rpcClient = new NettyClientTransport();
         RpcServiceProperties rpcServiceProperties = RpcServiceProperties.builder()
-                .group("test1")
+                .group("test2")
                 .version("version1")
                 .build();
         RpcClientProxy rpcClientProxy = new RpcClientProxy(rpcClient, rpcServiceProperties);

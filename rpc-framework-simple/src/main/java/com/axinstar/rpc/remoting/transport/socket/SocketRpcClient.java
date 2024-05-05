@@ -1,5 +1,6 @@
 package com.axinstar.rpc.remoting.transport.socket;
 
+import com.axinstar.rpc.entity.RpcServiceProperties;
 import com.axinstar.rpc.remoting.dto.RpcRequest;
 import com.axinstar.rpc.exception.RpcException;
 import com.axinstar.rpc.registry.ServiceDiscovery;
@@ -32,7 +33,13 @@ public class SocketRpcClient implements ClientTransport {
 
     @Override
     public Object sendRpcRequest(RpcRequest rpcRequest) {
-        InetSocketAddress inetSocketAddress = serviceDiscovery.lookupService(rpcRequest.getInterfaceName());
+        // build rpc service name by rpcRequest
+        String rpcServiceName = RpcServiceProperties.builder()
+                .serviceName(rpcRequest.getInterfaceName())
+                .group(rpcRequest.getGroup())
+                .version(rpcRequest.getVersion())
+                .build().toRpcServiceName();
+        InetSocketAddress inetSocketAddress = serviceDiscovery.lookupService(rpcServiceName);
         try (Socket socket = new Socket()) {
             socket.connect(inetSocketAddress);
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());

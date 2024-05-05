@@ -4,6 +4,12 @@ import org.springframework.stereotype.Component;
 
 import java.lang.annotation.*;
 
+/**
+ * RPC service annotation, marked on the service implementation class
+ *
+ * @author axin
+ * @since 2024/05/05
+ */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
